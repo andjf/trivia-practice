@@ -6,6 +6,7 @@ services:
     container_name: nginx-proxy
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/proxy_params:/etc/nginx/proxy_params:ro
     ports:
       - "80:80"
     networks:
@@ -20,11 +21,9 @@ services:
       dockerfile: Dockerfile
     container_name: lake
     ports:
-      - "8080:8080"
+      - "8080:80"
     networks:
       - app-network
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
 
   proxy:
     build:
@@ -32,11 +31,9 @@ services:
       dockerfile: Dockerfile
     container_name: proxy
     ports:
-      - "8081:8081"
+      - "8081:80"
     networks:
       - app-network
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
 
 networks:
   app-network:

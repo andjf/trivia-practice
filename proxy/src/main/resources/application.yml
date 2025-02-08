@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: proxy
+
+lake:
+  host: http://nginx-proxy:80
+
+server:
+  port: 80

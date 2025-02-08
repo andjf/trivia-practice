@@ -17,6 +17,11 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+    }
 }
 
 repositories {
@@ -29,22 +34,14 @@ dependencies {
 	implementation 'io.github.sashirestela:simple-openai:3.17.2'
 	implementation 'org.apache.commons:commons-lang3:3.14.0'
 
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'org.slf4j:slf4j-api:2.0.0-alpha1'
+    implementation 'ch.qos.logback:logback-classic:1.4.0'
 
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-configurations {
-    all {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        exclude group: 'ch.qos.logback', module: 'logback-classic'
-        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
-    }
 }
 
 tasks.named('test') {

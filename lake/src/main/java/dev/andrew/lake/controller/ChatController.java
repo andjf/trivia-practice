@@ -9,8 +9,10 @@ import dev.andrew.lake.config.OpenAiConfiguration;
 import io.github.sashirestela.openai.domain.chat.ChatMessage.SystemMessage;
 import io.github.sashirestela.openai.domain.chat.ChatMessage.UserMessage;
 import io.github.sashirestela.openai.domain.chat.ChatRequest;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 
+@Slf4j
 @RestController
 public class ChatController extends AiController {
 
@@ -20,6 +22,8 @@ public class ChatController extends AiController {
 
     @PostMapping("/v1/chat")
     public String chat(@RequestBody String prompt) {
+        log.info("Initiated /v1/chat request with prmopt [{}]", prompt);
+
         ChatRequest chat = baseBuilder()
                 .message(SystemMessage.of("You are an expert in AI."))
                 .message(UserMessage.of(prompt))
@@ -30,7 +34,9 @@ public class ChatController extends AiController {
 
     @PostMapping(value = "/v1/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> stream(@RequestBody String prompt) {
-        var chat = baseBuilder()
+        log.info("Initiated /v1/chat/stream request with prmopt [{}]", prompt);
+
+        ChatRequest chat = baseBuilder()
                 .message(SystemMessage.of("You are an expert in AI."))
                 .message(UserMessage.of(prompt))
                 .build();
