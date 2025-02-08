@@ -1,0 +1,23 @@
+{
+    "name": "Spring Boot NGINX Project",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "service": "nginx",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "settings": {},
+            "extensions": [
+                "vscjava.vscode-spring-boot",
+                "richardwillis.vscode-gradle"
+            ]
+        }
+    },
+    "postCreateCommand": "gradle clean build",
+    "forwardPorts": [
+        80,
+        8080,
+        8081
+    ]
+}

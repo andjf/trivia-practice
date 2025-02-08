@@ -1,0 +1,6 @@
+spring:
+  config:
+    import: optional:secrets.yml
+
+openai:
+  model: gpt-4o-mini
