@@ -12,24 +12,24 @@ services:
     networks:
       - app-network
     depends_on:
-      - lake
-      - proxy
+      - llm-proxy
+      - ui-proxy
 
-  lake:
+  llm-proxy:
     build:
-      context: ./lake
+      context: ./llm-proxy
       dockerfile: Dockerfile
-    container_name: lake
+    container_name: llm-proxy
     ports:
       - "8080:80"
     networks:
       - app-network
 
-  proxy:
+  ui-proxy:
     build:
-      context: ./proxy
+      context: ./ui-proxy
       dockerfile: Dockerfile
-    container_name: proxy
+    container_name: ui-proxy
     ports:
       - "8081:80"
     networks:
