@@ -1,20 +1,21 @@
 package dev.andrew.uiproxy.controller;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import dev.andrew.uiproxy.config.LlmProxyConfiguration;
-import reactor.core.publisher.Flux;
+import dev.andrew.uiproxy.model.TriviaQuestion;
 import reactor.core.publisher.Mono;
 
 @RestController
+@RequestMapping("/trivia")
 public class TriviaController {
 
-    private static final String STANDARD_CHAT_RESOURCE = "/v1/chat";
-    private static final String STREAMING_CHAT_RESOURCE = "/v1/chat/stream";
+    private static final String NEW_TRIVIA_RESOURCE = "/trivia/new";
 
     private final LlmProxyConfiguration llmProxyConfig;
     private final WebClient llmProxyWebClient;
@@ -24,24 +25,16 @@ public class TriviaController {
         this.llmProxyWebClient = builder.baseUrl(this.llmProxyConfig.host()).build();
     }
 
-    @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> stream(@RequestBody String prompt) {
-        return this.llmProxyWebClient.post()
-                .uri(STREAMING_CHAT_RESOURCE)
-                .body(Mono.just(prompt), String.class)
-                .accept(MediaType.TEXT_EVENT_STREAM)
+    @GetMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<TriviaQuestion> newTriviaQuestion(@RequestParam String topic, @RequestParam String difficulty) {
+        return this.llmProxyWebClient.get()
+                .uri(uriBuilder -> uriBuilder.path(NEW_TRIVIA_RESOURCE)
+                        .queryParam("topic", topic)
+                        .queryParam("difficulty", difficulty)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToFlux(String.class);
-    }
-
-    @PostMapping(value = "/chat", produces = MediaType.TEXT_PLAIN_VALUE)
-    public Mono<String> chat(@RequestBody String prompt) {
-        return this.llmProxyWebClient.post()
-                .uri(STANDARD_CHAT_RESOURCE)
-                .body(Mono.just(prompt), String.class)
-                .accept(MediaType.TEXT_EVENT_STREAM)
-                .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(TriviaQuestion.class);
     }
 
 }
