@@ -1,0 +1,110 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.trivia-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.prompt {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.option input[type="radio"] {
+    margin-right: 0.5rem;
+}
+
+.submit-button {
+    background-color: transparent;
+    border: 2px solid #3b82f6;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #3b82f6;
+    transition: all 0.25s ease-in-out;
+    width: 100%;
+}
+
+.submit-button:disabled {
+    border-color: #ddd;
+    color: #ddd;
+    cursor: not-allowed;
+}
+
+.submit-button:hover:enabled {
+    background-color: #e0f2fe;
+    border-color: #2563eb;
+    color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:active:enabled {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.skeleton-line {
+    background-color: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-line.question {
+    height: 4rem;
+    width: 90%;
+}
+
+.skeleton-line.option {
+    width: 80%;
+    height: 1.5rem;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.5;
+    }
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 1rem;
+}
