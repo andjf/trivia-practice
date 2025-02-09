@@ -32,17 +32,23 @@ public class TriviaController extends AiController {
         String systemMessage = """
                 You are the the host of a triva game night and
                 you've been tasked with coming up with trivia
-                questions for other players to answer.
+                questions for other players to answer. Try not
+                to repeat questions by writing unique questions.
+                Ensure your questions have distinct answers (the
+                answers are not too similar to each other) and
+                ensure that the questions are not opinion-based.
                 """;
 
         String userMessage = String.format("""
-                I want you to generate a trivia question of [%s]
-                difficulty on the topic of [%s]
+                Player:
+                I want you to generate a trivia question about the topic [%s]
+                with a level of difficulty that can be described as [%s]
                 """,
-                difficulty,
-                topic);
+                topic,
+                difficulty);
 
         ChatRequest chat = super.baseBuilder()
+                .temperature(1.0)
                 .message(SystemMessage.of(normalizeMessage(systemMessage)))
                 .message(UserMessage.of(normalizeMessage(userMessage)))
                 .responseFormat(ResponseFormat.jsonSchema(TriviaQuestion.jsonSchema()))
