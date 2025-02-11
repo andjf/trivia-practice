@@ -1,5 +1,6 @@
 package dev.andrew.llmproxy.controller;
 
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +42,7 @@ public class ChatController extends AiController {
                 .message(UserMessage.of(prompt))
                 .build();
 
-        return Flux.fromStream(super.chatStream(chat));
+        return Flux.fromStream(super.chatStream(chat).map(JSONObject::toString));
     }
 
 }

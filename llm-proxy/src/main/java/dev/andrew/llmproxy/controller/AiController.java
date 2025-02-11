@@ -1,14 +1,23 @@
 package dev.andrew.llmproxy.controller;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 
 import dev.andrew.llmproxy.config.OpenAiConfiguration;
 import io.github.sashirestela.openai.SimpleOpenAI;
 import io.github.sashirestela.openai.domain.chat.Chat;
 import io.github.sashirestela.openai.domain.chat.ChatRequest;
+import io.github.sashirestela.openai.domain.chat.Chat.Choice;
+import io.github.sashirestela.openai.domain.chat.ChatMessage.ResponseMessage;
 import io.github.sashirestela.openai.domain.chat.ChatRequest.ChatRequestBuilder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class AiController {
 
     private static final double DEFAULT_TEMP = 0.5;
@@ -54,12 +63,31 @@ public abstract class AiController {
                 .firstContent();
     }
 
-    protected Stream<String> chatStream(ChatRequest chat) {
+    private boolean shouldChoose(Choice choice) {
+        return Optional.ofNullable(choice)
+                .map(Choice::getMessage)
+                .map(ResponseMessage::getContent)
+                .filter(StringUtils::isNotEmpty)
+                .isPresent();
+    }
+
+    private JSONObject extractToken(Chat chat) {
+        return Optional.ofNullable(chat)
+                .map(Chat::getChoices)
+                .map(choices -> choices.stream()
+                        .filter(this::shouldChoose)
+                        .findFirst()
+                        .orElse(null))
+                .map(Choice::getMessage)
+                .map(ResponseMessage::getContent)
+                .map(token -> new JSONObject(Map.of("token", token)))
+                .orElse(null);
+    }
+
+    protected Stream<JSONObject> chatStream(ChatRequest chat) {
         var futureChat = openAI.chatCompletions().createStream(chat);
         var chatResponse = futureChat.join();
-        return chatResponse.filter(res -> res.getChoices().size() > 0)
-                .map(Chat::firstContent)
-                .filter(Objects::nonNull);
+        return chatResponse.map(this::extractToken).filter(Objects::nonNull);
     }
 
 }
