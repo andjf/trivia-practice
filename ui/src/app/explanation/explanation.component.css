@@ -1,0 +1,27 @@
+.dialog-container {
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.explain-dialog {
+    border-radius: 8px;
+}
+
+markdown {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25em;
+    padding: 30px;
+}

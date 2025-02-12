@@ -1,0 +1,13 @@
+<div class="dialog-container">
+    <button class="close-button" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+
+    <div *ngIf="loading">
+        <mat-spinner diameter="40"></mat-spinner> <span style="margin-left:8px">Loading...</span>
+    </div>
+    <div *ngIf="!loading">
+        <markdown [data]="content" />
+    </div>
+
+</div>

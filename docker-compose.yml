@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/proxy_params:/etc/nginx/proxy_params:ro
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - llm-proxy
+      - ui-proxy
+
+  llm-proxy:
+    build:
+      context: ./llm-proxy
+      dockerfile: Dockerfile
+    container_name: llm-proxy
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+  ui-proxy:
+    build:
+      context: ./ui-proxy
+      dockerfile: Dockerfile
+    container_name: ui-proxy
+    ports:
+      - "8081:80"
+    networks:
+      - app-network
+
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    container_name: ui
+    ports:
+      - "4200:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

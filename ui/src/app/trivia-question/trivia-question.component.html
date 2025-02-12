@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="trivia-card">
+        <div *ngIf="loading" class="skeleton">
+            <div class="skeleton-line question"></div>
+            <div class="skeleton-line option"></div>
+            <div class="skeleton-line option"></div>
+            <div class="skeleton-line option"></div>
+            <div class="skeleton-line option"></div>
+        </div>
+        <div *ngIf="!loading && question" class="question-content">
+            <form (ngSubmit)="submitAnswer()" #triviaForm="ngForm">
+                <div class="prompt">{{ question.question }}</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="answer" value="0" [(ngModel)]="selectedInput" required>
+                        <span>{{ question.option1 }}</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="answer" value="1" [(ngModel)]="selectedInput" required>
+                        <span>{{ question.option2 }}</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="answer" value="2" [(ngModel)]="selectedInput" required>
+                        <span>{{ question.option3 }}</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="answer" value="3" [(ngModel)]="selectedInput" required>
+                        <span>{{ question.option4 }}</span>
+                    </label>
+                </div>
+                <button class="submit-button" type="submit" [disabled]="!triviaForm.form.valid">Submit</button>
+            </form>
+        </div>
+        <div [@collapse]="!hasGuessed">
+            <button class="explain-button" (click)="openDialog()">Explain</button>
+        </div>
+        <div *ngIf="!loading && !question" class="error-message">
+            Error fetching question. Please try again.
+        </div>
+    </div>
+</div>

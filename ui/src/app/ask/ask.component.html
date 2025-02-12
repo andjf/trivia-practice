@@ -1,0 +1,18 @@
+<div class="container">
+    <form (ngSubmit)="onSubmit()" #triviaForm="ngForm" class="trivia-form">
+        <p class="prompt">
+            I want to practice my
+            <input class="input-field" type="text" placeholder="topic" [(ngModel)]="topic" name="topic" required />
+            trivia with
+            <input class="input-field" type="text" placeholder="difficulty" [(ngModel)]="difficulty" name="difficulty"
+                required />
+            difficulty.
+        </p>
+        <button type="submit" class="submit-button" [disabled]="!canSubmit()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </button>
+    </form>
+</div>
