@@ -45,25 +45,17 @@ export class TriviaQuestionComponent implements OnInit {
   async fetchQuestion() {
     this.loading = true;
     try {
-      // const url = `${environment.apiBaseUrl}/trivia/new`;
-      // const obs = this.http.get<TriviaQuestion>(
-      //   url,
-      //   {
-      //     params: {
-      //       "topic": this.topic,
-      //       "difficulty": this.difficulty,
-      //     }
-      //   }
-      // );
-      // this.question = await firstValueFrom(obs);
-      this.question = {
-        question: "Which has the largest atomic number?",
-        option1: "Hydrogen",
-        option2: "Oxygen",
-        option3: "Carbon",
-        option4: "Gold",
-        answerIndex: 3,
-      };
+      const url = `${environment.apiBaseUrl}/trivia/new`;
+      const obs = this.http.get<TriviaQuestion>(
+        url,
+        {
+          params: {
+            "topic": this.topic,
+            "difficulty": this.difficulty,
+          }
+        }
+      );
+      this.question = await firstValueFrom(obs);
     } catch (error) {
       console.error("Error fetching question:", error);
       this.question = null;
