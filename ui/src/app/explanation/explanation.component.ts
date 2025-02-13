@@ -61,7 +61,6 @@ export class ExplanationComponent {
     const url = `${environment.apiBaseUrl}/stream`
 
     const extractToken = (tokenJson: string): { token: string } => {
-      console.log(`working on tokenJson <${tokenJson}>`)
       return JSON.parse(tokenJson);
     }
 

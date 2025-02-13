@@ -109,15 +109,12 @@ export class TriviaQuestionComponent implements OnInit {
   }
 
   openDialog() {
-    console.log("opening dialog");
     const dialogRef = this.dialog.open(ExplanationComponent, {
       data: this.question,
       panelClass: 'explain-dialog',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    dialogRef.afterClosed().subscribe();
   }
 }
