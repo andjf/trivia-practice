@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { map, Subject } from 'rxjs';
+import { filter, map, Subject } from 'rxjs';
 import { TriviaQuestion } from '../model/trivia-question.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
@@ -60,8 +60,23 @@ export class ExplanationComponent {
   ngOnInit(): void {
     const url = `${environment.apiBaseUrl}/stream`
 
+    const extractToken = (tokenJson: string): { token: string } => {
+      console.log(`working on tokenJson <${tokenJson}>`)
+      return JSON.parse(tokenJson);
+    }
+
+    const validData = (tokenJson: string): boolean => {
+      try {
+        JSON.parse(tokenJson);
+        return !!tokenJson;
+      } catch (err) {
+        console.error(`failed to parse JSON from data <${tokenJson}>`);
+        return false;
+      }
+    }
+
     this.sseClient.stream(url, this.getPromptBody())
-      .pipe(map(tokenJson => JSON.parse(tokenJson) as { token: string }))
+      .pipe(filter(validData), map(extractToken))
       .subscribe((event) => {
         this.loading = false;
         this.tokens.push(event.token);
