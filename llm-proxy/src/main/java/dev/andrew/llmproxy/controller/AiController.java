@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AiController {
 
     private static final double DEFAULT_TEMP = 0.5;
-    private static final int DEFAULT_MAX_TOKENS = 300;
+    private static final int DEFAULT_MAX_TOKENS = 1024;
 
     protected final OpenAiConfiguration openAiConfiguration;
     protected final SimpleOpenAI openAI;
